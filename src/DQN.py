@@ -238,7 +238,7 @@ class Agent:
 
         self.optimizer.zero_grad()
 
-        # masrk of the final state, since next_state is always in range(600) but it is -1
+        # mask of the final state, since next_state is always in range(600) but it is -1
         # when it is finished or trunketed == -2
         non_final_mask = [next_states >= 0]
         # The values of all the non final states
@@ -246,11 +246,11 @@ class Agent:
             self.device
         )
 
-        # Calculate the explected best action using the nn target
+        # Calculate the expected best action using the NN target
         # We put penalty as default
         q_expected = torch.zeros(self.batch_size).to(self.device)
 
-        # Calculated the estimate for the q table
+        # Calculated the estimate for the Q-table
         q_values = self.dqn_model(states).gather(1, actions.long().unsqueeze(1))
 
         # Here we do not want to accumulate gradient, we use the NN as a table
@@ -289,13 +289,11 @@ class Agent:
                 # Select the action (epsilon is just a nice to have)
                 action, epsilon = self.greedy_dqn(state, episode, self.num_episodes)
 
-                # print(f"Episode: {episode}, Action: {action}")
-
                 # Execute the action
                 next_state, reward, done, truncated, _ = self.env.step(action)
                 total_reward += reward
 
-                # we decided to represent -1 as the None next_state
+                # We decided to represent -1 as the None next_state
                 if done or truncated:
                     next_state = -1
 
@@ -309,12 +307,12 @@ class Agent:
 
                 state = next_state
 
-            # if we have enough elements in the memory we train the nn
+            # If we have enough elements in the memory we train the NN
             if len(self.replay_memory) >= self.batch_size:
                 batch = self.replay_memory.sample_D(self.batch_size)
                 l = self.optimize(batch)
 
-            # print(f"Episode: {episode}, Total reward: {total_reward}", end="\r")
+           
 
             # Append Metrics
             self.metrics["cumulative_rewards"].append(total_reward)
@@ -403,7 +401,7 @@ class Agent:
         return self.metrics
 
     # This function is to visually test the model
-    # it will print the varius fram of the Agent playing the game
+    # It will print the various frame of the Agent playing the game
     def test_visual(self):
         env_video = gym.wrappers.RecordVideo(
             self.env, video_folder="video_DQN", episode_trigger=lambda x: True
@@ -425,8 +423,8 @@ class Agent:
 
             print(f"Episode: {episode}, Total reward: {total_reward}")
 
-    # this function is to test how reliable is the model
-    # it will just get the varius metrics just using the Policy network
+    # This function is to test how reliable is the model
+    # it will just get the various metrics just using the Policy network
     def test_relay(self):
 
         self.metrics = {

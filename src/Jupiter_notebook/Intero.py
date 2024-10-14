@@ -123,7 +123,6 @@ Here we tried to found the optimal action to the different states using tabular 
 
 We explored 2 different policies to choose whether exploring or exploiting, the greedy policy and the softmax policy.
 
-
 """
 
 
