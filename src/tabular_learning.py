@@ -127,14 +127,14 @@ def training(num_episodes, F_policy, F_update_p,
     n_actions = env.action_space.n
     Q = torch.zeros(n_states, n_actions)
 
-    print("The Q table is in:", Q.device)
+    print("The Q-table is in: ", Q.device)
 
     # Metrics
     cumulative_rewards = []
     success_rates = []
     num_steps = []
 
-    print(f"Training for :{num_episodes:} Episodes")
+    print(f"Training for: {num_episodes:} episodes")
     # for loop for the episods
     for episode in tqdm(range(num_episodes)):
 
