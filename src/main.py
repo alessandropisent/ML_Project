@@ -30,7 +30,7 @@ def GreedyQlearning():
         select_action_greedy,
         steady_decrease_epsilon,
         alpha,
-        gamma,
+        gamma, 
         "Epsilon with Greedy policy",
         max_steps,
         env,
@@ -62,7 +62,7 @@ def dynamicSoftmaxQlearning():
     concat_videos_and_delete(["Softmax/"])
 
 
-def DQN_learning(need_trainig=True):
+def DQN_learning(need_training=True):
 
     device = torch.device(
         "cuda"
@@ -70,7 +70,7 @@ def DQN_learning(need_trainig=True):
         else "mps" if torch.backends.mps.is_available() else "cpu"
     )
 
-    # @title Training
+    # Training
     learning_rate = 0.001
     gamma = 0.999
     num_episodes = 50_000
@@ -80,7 +80,7 @@ def DQN_learning(need_trainig=True):
     agent = Agent(
         learning_rate, gamma, num_episodes, replay_capacity, batch_size, device=device
     )
-    if need_trainig:
+    if need_training:
         agent.train()
         agent.save_csv_metrics("metrics.csv")
         agent.save_model("model.pth")
@@ -91,14 +91,14 @@ def DQN_learning(need_trainig=True):
 
     agent.plot_metrics()
 
-    ## Testing with visual
+    # Testing with visual
     print("CREATING VIDEOS of THE AGENT PLAYING\n\n")
     agent.set_test_size(10)
     agent.test_visual()
 
     concat_videos_and_delete(["DQN/"])
 
-    ## Testing success rate
+    # Testing success rate
     print("Testing the success rate of the agent over 10000 episodes")
     agent.set_test_size(10_000)
     agent.test_relay()

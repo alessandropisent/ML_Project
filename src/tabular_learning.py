@@ -8,7 +8,7 @@ from tqdm import tqdm
 #env = gym.make('Taxi-v3',render_mode="rgb_array")
 #env.time_limit = 200
 
-#@title Policy Greedy
+# Policy Greedy
 def select_action_greedy(Q, state, episode, max_episodes, update_epsilon, env):
     """
     Selects an action using the epsilon-greedy policy.
@@ -31,11 +31,11 @@ def select_action_greedy(Q, state, episode, max_episodes, update_epsilon, env):
     else:  # Exploitation
         return torch.argmax(Q[state]).item()
 
-#@title decrease of epsilon greedy
+# Decrease of epsilon greedy
 def steady_decrease_epsilon(episode, max_episodes):
     return 1.0 - episode / max_episodes
 
-#@title Softmax policy
+# Softmax policy
 def select_action_softmax(Q, state, episode, max_episodes, update_base, env):
     """
     Selects an action using the softmax policy.
@@ -62,7 +62,7 @@ def select_action_softmax(Q, state, episode, max_episodes, update_base, env):
 
     return torch.multinomial(probs, 1).item()
 
-#@title Esponential decrease
+# Esponential decrease
 def dynamic_base(episode, max_episodes, initial_base=20, min_base=math.e, decay_rate=0.20):
     """
     Returns the base (or temperature) for the softmax policy depending on the current episode.
@@ -83,7 +83,7 @@ def dynamic_base(episode, max_episodes, initial_base=20, min_base=math.e, decay_
     # Ensure the base doesn't fall below the minimum allowed value
     return max(base, min_base)
 
-#@title Rolling avg function
+# Rolling avg function
 def rolling_average(data, window_size):
     """
     Computes the rolling average
@@ -101,7 +101,7 @@ def rolling_average(data, window_size):
 
     return rolling_averages.tolist()
 
-#@title Training function for Tabular Q learning
+# Training function for Tabular Q-learning
 def training(num_episodes, F_policy, F_update_p, 
              alpha, gamma, string_param, 
              max_steps, env):
@@ -110,16 +110,16 @@ def training(num_episodes, F_policy, F_update_p,
 
     Parameters:
     - num_episodes: max number of episodes for the training
-    - F_policy : function that selects the policy the action.
-    - F_update_p : function that updates the parameters of the policy.
-    - alpha : Hyperparameter for the learning rate.
-    - gamma : Hyperparameter for the discount factor.
-    - early_stopping : Boolean flag indicating whether early stopping is enabled.
+    - F_policy: function that selects the policy and the action.
+    - F_update_p: function that updates the parameters of the policy.
+    - alpha: Hyperparameter for the learning rate.
+    - gamma: Hyperparameter for the discount factor.
+    - early_stopping: Boolean flag indicating whether early stopping is enabled.
 
     Returns:
     - cumulative_rewards: List of cumulative rewards for each episode.
     - num_steps: List of number of steps taken for each episode.
-    - success_rates: List of success rates for each episode. [0 if not succesful,1 otherwhise]
+    - success_rates: List of success rates for each episode. [0 if not successful,1 otherwise]
     """
 
     # Initialize Q-table (state-action value table)
@@ -135,7 +135,7 @@ def training(num_episodes, F_policy, F_update_p,
     num_steps = []
 
     print(f"Training for: {num_episodes:} episodes")
-    # for loop for the episods
+    # for loop for the episodes
     for episode in tqdm(range(num_episodes)):
 
         # Reset the environment and get the initial state
@@ -147,7 +147,7 @@ def training(num_episodes, F_policy, F_update_p,
         for step in range(max_steps):
 
             # choose the action according the function it was given and update
-            # the paramenter for the policy
+            # the parameter for the policy
             action = F_policy(Q, state, episode, num_episodes, F_update_p, env)
 
             # Execute the action
@@ -181,7 +181,7 @@ def training(num_episodes, F_policy, F_update_p,
 
     return Q
 
-#@title Test function
+# Test function
 def test_q(Q, num_episodes,nameAgent, env):
     env_video = gym.wrappers.RecordVideo(env, video_folder='video_'+nameAgent, episode_trigger=lambda x: True)
     for episode in range(num_episodes):

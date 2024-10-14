@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def plot_metrics(cumulative_rewards, num_steps, success_rates, param, string_param):
     """
     Function that plots the metrics.
@@ -8,10 +9,10 @@ def plot_metrics(cumulative_rewards, num_steps, success_rates, param, string_par
     Parameters:
     - cumulative_rewards: List of cumulative rewards for each episode.
     - num_steps: List of number of steps taken for each episode.
-    - success_rates: List of success rates for each episode. [0 if not succesful,1 otherwhise]
+    - success_rates: List of success rates for each episode. [0 if not successful,1 otherwise]
     - param: List of parameter values for each episode.
     - string_param: String representation of the parameter, used in the plot of the parameter
-                    variation throuout the training.
+                    variation throughout the training.
 
     Returns:
     - None (plots the metrics with matplotlib).
@@ -54,7 +55,8 @@ def plot_metrics(cumulative_rewards, num_steps, success_rates, param, string_par
     # Show the plot
     plt.show()
 
-#@title Rolling avg function
+
+# Rolling avg function
 def rolling_average(data, window_size):
     """
     Computes the rolling average
@@ -68,11 +70,12 @@ def rolling_average(data, window_size):
     """
 
     # Calculate the rolling averages
-    rolling_averages = np.convolve(data, np.ones(window_size)/ window_size, 'valid')
+    rolling_averages = np.convolve(data, np.ones(window_size) / window_size, "valid")
 
     return rolling_averages.tolist()
 
-#@title cumulative function
+
+# Cumulative function
 def cumulative(data, window_size):
     """
     Computes the cumulative sum
@@ -85,13 +88,13 @@ def cumulative(data, window_size):
     - A list of cumulative sums.
     """
 
-
     # Use a rolling window sum function
-    result = np.convolve(data, np.ones(window_size), 'valid')
+    result = np.convolve(data, np.ones(window_size), "valid")
 
     return result.tolist()
 
+
 def show_env(env):
     plt.imshow(env.render())
-    plt.axis('off')
+    plt.axis("off")
     plt.show()
